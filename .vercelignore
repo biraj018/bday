@@ -1,0 +1,7 @@
+# Ignore common dev files — keep deployment bundle small
+.git/
+node_modules/
+*.log
+README.md
+*.psd
+*.ai

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Birthday Wishes Cards 🎁</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100dvh;
+    background: linear-gradient(135deg, #ffe0ec 0%, #fff0d4 20%, #d4f0ff 40%, #e8d4ff 60%, #ffd4ec 80%, #fff0c0 100%);
+    background-size: 300% 300%;
+    animation: bgShift 8s ease infinite;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: clamp(12px,3vw,32px);
+  }
+  @keyframes bgShift {
+    0%,100% { background-position:0% 50%; }
+    50%     { background-position:100% 50%; }
+  }
+
+  /* ── DECOS ── */
+  .deco {
+    position:fixed; pointer-events:none; user-select:none;
+    animation: floatDeco ease-in-out infinite; z-index:0;
+  }
+  @keyframes floatDeco {
+    0%,100% { transform:translateY(0) rotate(0deg); }
+    33%     { transform:translateY(-14px) rotate(8deg); }
+    66%     { transform:translateY(8px) rotate(-5deg); }
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align:center; margin-bottom:clamp(14px,3vw,24px);
+    position:relative; z-index:2;
+    animation: fadeSlideDown 0.5s ease both;
+  }
+  @keyframes fadeSlideDown {
+    from { opacity:0; transform:translateY(-18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .header h1 {
+    font-size:clamp(1.15rem,3.2vw,1.65rem);
+    font-weight:900; color:#E8186D; margin-bottom:3px;
+    letter-spacing:-0.01em;
+  }
+  .header p { font-size:clamp(0.75rem,1.9vw,0.9rem); font-weight:600; color:#aaa; }
+
+  /* ── OUTER CARD CONTAINER ── */
+  .outer {
+    background: rgba(255,253,235,0.95);
+    border-radius: clamp(16px,3.5vw,26px);
+    width: min(1000px, 96vw);
+    padding: clamp(18px,3.5vw,36px) clamp(14px,3vw,28px) clamp(18px,3.5vw,32px);
+    box-shadow: 0 6px 40px rgba(255,100,150,0.12), 0 1px 8px rgba(0,0,0,0.05);
+    position:relative; z-index:2;
+    animation: fadeSlideUp 0.5s cubic-bezier(0.34,1.2,0.64,1) 0.1s both;
+  }
+  @keyframes fadeSlideUp {
+    from { opacity:0; transform:translateY(20px) scale(0.97); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* ── CARDS ROW ── */
+  .cards-row {
+    display:flex; gap:clamp(10px,2vw,18px);
+    justify-content:center; align-items:stretch;
+    margin-bottom: clamp(18px,3.5vw,28px);
+  }
+
+  /* ── FLIP CARD ── */
+  .flip-card {
+    flex:1; min-width:0;
+    max-width: clamp(175px,30vw,300px);
+    aspect-ratio:4/3;
+    perspective:1400px;
+    cursor:pointer;
+  }
+  .flip-inner {
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+    border-radius:clamp(10px,2vw,16px);
+  }
+  .flip-card.flipped .flip-inner { transform:rotateY(180deg); }
+
+  .flip-front, .flip-back {
+    position:absolute; inset:0;
+    border-radius:inherit;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    overflow:hidden;
+    box-shadow:0 3px 16px rgba(255,100,150,0.14), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* FRONT */
+  .flip-front { background:#fff; }
+  .flip-front img, .flip-front svg.card-art {
+    width:100%; height:100%;
+    object-fit:cover; display:block;
+  }
+
+  /* Hover lift + open label */
+  .flip-card:not(.flipped):hover .flip-front {
+    transform:scale(1.025);
+    transition:transform 0.2s;
+  }
+  .open-tag {
+    position:absolute; bottom:clamp(6px,1.5vw,10px); left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,0.9); color:#E8186D;
+    font-size:clamp(0.65rem,1.5vw,0.78rem); font-weight:800;
+    padding:3px 12px; border-radius:100px;
+    opacity:0; transition:opacity 0.18s; pointer-events:none;
+    white-space:nowrap; backdrop-filter:blur(4px);
+  }
+  .flip-card:not(.flipped):hover .open-tag { opacity:1; }
+
+  /* BACK */
+  .flip-back {
+    transform:rotateY(180deg);
+    background:#fff;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:clamp(12px,3vw,22px) clamp(10px,2.5vw,18px);
+    text-align:center;
+  }
+  .back-msg {
+    font-size:clamp(0.8rem,1.8vw,0.98rem);
+    font-weight:700; color:#555; line-height:1.65;
+    margin-bottom:clamp(8px,1.5vw,14px);
+  }
+  .back-emojis { font-size:clamp(1rem,2.2vw,1.3rem); margin-top:4px; display:block; }
+  .tap-back {
+    margin-top:auto; border:none; background:none; cursor:pointer;
+    color:#E8186D; font-family:'Nunito',sans-serif;
+    font-size:clamp(0.68rem,1.5vw,0.8rem); font-weight:700;
+    opacity:0.65; transition:opacity 0.15s;
+    padding:2px 0;
+  }
+  .tap-back:hover { opacity:1; }
+
+  /* Flip-back hover hint shown on back face when card is hovered */
+  .flip-back-tag {
+    position:absolute; bottom:clamp(6px,1.5vw,10px); left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,0.9); color:#E8186D;
+    font-size:clamp(0.65rem,1.5vw,0.78rem); font-weight:800;
+    padding:3px 12px; border-radius:100px;
+    opacity:0; transition:opacity 0.18s; pointer-events:none;
+    white-space:nowrap; backdrop-filter:blur(4px);
+    z-index:3;
+  }
+  .flip-card.flipped:hover .flip-back-tag { opacity:1; }
+
+  /* ── PROGRESS ── */
+  .progress-area { text-align:center; }
+  .progress-label {
+    font-size:clamp(0.8rem,1.9vw,0.93rem);
+    font-weight:700; color:#E8186D; margin-bottom:9px;
+    min-height:1.3em; transition:all 0.3s;
+  }
+  .bar-track {
+    width:min(340px,78%); height:5px;
+    background:rgba(232,24,109,0.1);
+    border-radius:100px; margin:0 auto; overflow:hidden;
+  }
+  .bar-fill {
+    height:100%; border-radius:100px;
+    background:linear-gradient(90deg,#FF4DA6,#E8186D);
+    width:0%; transition:width 0.7s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:0 0 8px rgba(232,24,109,0.35);
+  }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.32);
+    backdrop-filter:blur(7px);
+    display:flex; align-items:center; justify-content:center;
+    z-index:999; padding:20px;
+    opacity:0; pointer-events:none;
+    transition:opacity 0.3s ease;
+  }
+  .modal-overlay.show { opacity:1; pointer-events:auto; }
+
+  .modal {
+    background:#fff;
+    border-radius:clamp(16px,4vw,22px);
+    padding:clamp(26px,5vw,42px) clamp(22px,4.5vw,46px);
+    text-align:center; width:min(390px,90vw);
+    box-shadow:0 20px 70px rgba(0,0,0,0.15), 0 4px 18px rgba(232,24,109,0.12);
+    transform:scale(0.82) translateY(22px);
+    opacity:0;
+    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+  }
+  .modal-overlay.show .modal { transform:scale(1) translateY(0); opacity:1; }
+
+  .modal-icon { font-size:clamp(2.2rem,5.5vw,3rem); display:block; margin-bottom:12px; }
+  .modal-title {
+    font-size:clamp(1.2rem,3.5vw,1.6rem);
+    font-weight:900; color:#E8186D; margin-bottom:10px;
+    line-height:1.2;
+  }
+  .modal-body {
+    font-size:clamp(0.8rem,1.9vw,0.93rem);
+    font-weight:600; color:#888; line-height:1.65; margin-bottom:22px;
+  }
+  .modal-btn {
+    display:block; width:100%;
+    background:linear-gradient(135deg,#FF4DA6,#E8186D);
+    color:#fff; font-family:'Nunito',sans-serif;
+    font-size:clamp(0.85rem,2vw,0.98rem); font-weight:800;
+    padding:clamp(12px,2.5vw,15px) 20px;
+    border-radius:100px; border:none; cursor:pointer;
+    box-shadow:0 5px 22px rgba(232,24,109,0.38);
+    margin-bottom:11px;
+    transition:transform 0.18s, box-shadow 0.18s;
+  }
+  .modal-btn:hover { transform:translateY(-2px); box-shadow:0 9px 28px rgba(232,24,109,0.48); }
+  .modal-dismiss {
+    font-size:clamp(0.72rem,1.7vw,0.82rem); font-weight:600; color:#ccc;
+    background:none; border:none; cursor:pointer; font-family:'Nunito',sans-serif;
+    transition:color 0.15s;
+  }
+  .modal-dismiss:hover { color:#999; }
+
+  /* ── CONFETTI ── */
+  #confetti { position:fixed; inset:0; pointer-events:none; z-index:9999; }
+
+  /* ── LETTER PAGE ── */
+  #letter-page {
+    position: fixed; inset: 0; z-index: 1200;
+    background: linear-gradient(160deg, #ffe6f0 0%, #fff8e0 50%, #ffe6f0 100%);
+    background-size: 200% 200%;
+    animation: bgShift 8s ease infinite;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: clamp(16px,4vw,40px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  #letter-page.show { opacity: 1; pointer-events: auto; }
+
+  .letter-page-title {
+    text-align: center; margin-bottom: clamp(14px,3vw,24px);
+    animation: none;
+  }
+  .letter-page-title h1 {
+    font-size: clamp(1.2rem,3.5vw,1.7rem);
+    font-weight: 900; color: #E8186D; margin-bottom: 4px;
+  }
+  .letter-page-title p {
+    font-size: clamp(0.75rem,1.8vw,0.88rem);
+    font-weight: 600; color: #bbb;
+  }
+
+  /* The card */
+  .letter-card {
+    background: #fff;
+    border-radius: clamp(14px,3vw,22px);
+    width: min(640px, 94vw);
+    box-shadow: 0 8px 48px rgba(255,100,150,0.14), 0 2px 12px rgba(0,0,0,0.06);
+    position: relative; overflow: hidden;
+    min-height: 320px;
+  }
+
+  /* Cat sticker top-right */
+  .cat-sticker {
+    position: absolute; top: -10px; right: -8px;
+    width: clamp(74px,14vw,110px);
+    pointer-events: none; z-index: 2;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+  }
+
+  /* Heart bottom-left */
+  .heart-deco {
+    position: absolute; bottom: clamp(10px,2vw,18px); left: clamp(14px,3vw,22px);
+    font-size: clamp(1rem,2vw,1.4rem);
+    pointer-events: none; z-index: 2;
+    animation: floatDeco 4s ease-in-out infinite;
+  }
+
+  /* ── LETTER CONTENT ── */
+  #letter-content {
+    padding: clamp(20px,4vw,36px) clamp(20px,4vw,36px) clamp(16px,3vw,28px);
+  }
+
+  .letter-header {
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1.5px solid #f0e8f8;
+    padding-bottom: 10px; margin-bottom: clamp(14px,3vw,22px);
+  }
+  .letter-header-icon {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg,#FF4DA6,#E8186D);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; flex-shrink: 0;
+  }
+  .letter-header-title {
+    font-size: clamp(0.78rem,1.8vw,0.9rem);
+    font-weight: 700; color: #888;
+  }
+
+  .letter-greeting {
+    font-size: clamp(0.88rem,2vw,1rem);
+    font-weight: 800; color: #E8186D;
+    margin-bottom: clamp(8px,2vw,14px);
+    font-style: italic;
+  }
+  .letter-body {
+    font-size: clamp(0.82rem,1.9vw,0.95rem);
+    font-weight: 600; color: #444;
+    line-height: 1.75;
+    margin-bottom: clamp(10px,2vw,16px);
+  }
+  .letter-sign {
+    font-size: clamp(0.82rem,1.9vw,0.95rem);
+    font-weight: 700; color: #6BBFD4;
+    font-style: italic;
+  }
+
+  .letter-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    border-top: 1.5px solid #f5eeff;
+    padding-top: clamp(12px,2.5vw,18px);
+    margin-top: clamp(14px,3vw,22px);
+  }
+  .letter-footer-note {
+    font-size: clamp(0.68rem,1.5vw,0.78rem);
+    font-weight: 600; color: #ccc;
+  }
+  .letter-footer-btns {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+  }
+  .seal-btn {
+    background: linear-gradient(135deg,#FF9FC8,#E8186D);
+    color: #fff; border: none; cursor: pointer;
+    font-family: 'Nunito',sans-serif;
+    font-size: clamp(0.78rem,1.8vw,0.88rem); font-weight: 800;
+    padding: clamp(9px,2vw,12px) clamp(18px,3vw,26px);
+    border-radius: 100px;
+    box-shadow: 0 4px 16px rgba(232,24,109,0.32);
+    transition: transform 0.18s, box-shadow 0.18s, opacity 0.2s;
+  }
+  .seal-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(232,24,109,0.42); }
+  .seal-btn:disabled { opacity: 0.5; cursor: default; }
+
+  /* ── SEALING ANIMATION ── */
+  #letter-sealing {
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: clamp(36px,6vw,60px) 24px;
+    gap: 18px; text-align: center;
+  }
+  #letter-sealing .seal-envelope {
+    font-size: clamp(2.8rem,7vw,4.2rem);
+    animation: sealBounce 0.7s ease-in-out infinite alternate,
+               sealSpin 1.8s ease-in-out infinite;
+  }
+  @keyframes sealBounce {
+    from { transform: translateY(0) scale(1); }
+    to   { transform: translateY(-12px) scale(1.08); }
+  }
+  @keyframes sealSpin {
+    0%   { filter: hue-rotate(0deg) drop-shadow(0 0 8px rgba(232,24,109,0.4)); }
+    50%  { filter: hue-rotate(20deg) drop-shadow(0 0 18px rgba(255,100,170,0.7)); }
+    100% { filter: hue-rotate(0deg) drop-shadow(0 0 8px rgba(232,24,109,0.4)); }
+  }
+  #letter-sealing .seal-text {
+    font-size: clamp(0.88rem,2vw,1.05rem);
+    font-weight: 700; color: #aaa;
+    letter-spacing: 0.01em;
+  }
+  #letter-sealing .seal-dots span {
+    display: inline-block;
+    animation: sealDot 1.2s ease-in-out infinite;
+    font-size: 1.4em; color: #E8186D; font-weight: 900;
+  }
+  #letter-sealing .seal-dots span:nth-child(2) { animation-delay: 0.2s; }
+  #letter-sealing .seal-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes sealDot {
+    0%,80%,100% { opacity:0.2; transform:scale(0.8); }
+    40%         { opacity:1;   transform:scale(1.3); }
+  }
+
+  /* ── SEALED STATE ── */
+  #letter-sealed {
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: clamp(30px,5vw,56px) clamp(20px,4vw,36px) clamp(28px,4.5vw,48px);
+    text-align: center; gap: 10px;
+    opacity: 0; transform: scale(0.9);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.4,0.64,1);
+  }
+  #letter-sealed.visible { opacity: 1; transform: scale(1); }
+
+  .sealed-icon {
+    width: clamp(62px,11vw,86px); height: clamp(62px,11vw,86px);
+    background: linear-gradient(135deg,#FFB7D5,#FF6EA8);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(1.8rem,4.2vw,2.6rem);
+    box-shadow: 0 6px 28px rgba(255,100,150,0.36);
+    margin-bottom: 6px;
+    animation: sealedPop 0.6s cubic-bezier(0.34,1.5,0.64,1) both;
+  }
+  @keyframes sealedPop {
+    from { transform: scale(0) rotate(-20deg); opacity:0; }
+    to   { transform: scale(1) rotate(0deg);  opacity:1; }
+  }
+  .sealed-title {
+    font-size: clamp(1.2rem,3.2vw,1.65rem);
+    font-weight: 900; color: #E8186D; line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .sealed-sub {
+    font-size: clamp(0.8rem,1.9vw,0.95rem);
+    font-weight: 600; color: #999;
+    margin-bottom: 10px;
+  }
+  .sealed-hearts {
+    display: flex; gap: 8px; justify-content: center;
+    margin: 6px 0 14px;
+  }
+  .seal-heart {
+    font-size: clamp(1.2rem,2.8vw,1.5rem);
+    opacity: 0.2;
+    transition: opacity 0.25s, transform 0.25s cubic-bezier(0.34,1.5,0.64,1);
+    transform: scale(0.7);
+  }
+  .seal-heart.filled { opacity: 1; transform: scale(1); }
+  .sealed-sign {
+    font-size: clamp(0.95rem,2.4vw,1.15rem);
+    font-weight: 800; color: #555;
+    margin-bottom: 4px;
+  }
+  .sealed-date {
+    font-size: clamp(0.72rem,1.7vw,0.85rem);
+    font-weight: 600; color: #ccc;
+    margin-bottom: 0;
+  }
+  .sealed-closing {
+    margin-top: clamp(16px,3vw,26px);
+    font-size: clamp(0.72rem,1.6vw,0.82rem);
+    font-weight: 700;
+    color: #E8186D;
+    opacity: 0.55;
+    letter-spacing: 0.02em;
+    animation: fadeInUp 0.6s ease 1.8s both;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 0.55; transform: translateY(0); }
+  }
+
+  /* ── CARD 1 SVG ART: Hello Kitty face illustration ── */
+  .card1-bg {
+    width:100%; height:100%;
+    background:linear-gradient(145deg, #fff5f8 0%, #fffce8 100%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .card1-bg img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+  .card1-bg svg {
+    display:none;
+  }
+
+  /* Override art for card 3 when using external image */
+  #fc2 .flip-front img:first-of-type {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    border-radius:inherit;
+  }
+  #fc2 .flip-front img:nth-of-type(2) {
+    display:none;
+  }
+
+  /* ── CARD 2 SVG ART: Hello Kitty reading / letter ── */
+  .card2-bg {
+    width:100%; height:100%;
+    background:linear-gradient(145deg,#f0faf8 0%,#f8fcf4 100%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+
+  /* Responsive: convert flipcards to stacked list on small screens */
+  @media (max-width:520px) {
+    .cards-row { flex-direction: column; gap: 14px; align-items: stretch; }
+    .flip-card { width: 100%; max-width: 100%; height: auto; perspective: none; }
+    .flip-inner { transform: none !important; transition: none !important; position: relative; display: block; }
+    .flip-front, .flip-back { position: relative; width: 100%; height: auto; backface-visibility: visible; box-shadow: none; }
+    .flip-front { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+    .flip-back { overflow: hidden; max-height: 0; opacity: 0; padding: 0 18px; transition: max-height 360ms ease, opacity 280ms ease; }
+    .flip-card.expanded .flip-back { max-height: 800px; opacity: 1; padding: 14px 18px 20px; }
+    .open-tag, .flip-back-tag, .tap-back { display: inline-flex; }
+    .open-tag { position: relative; right: auto; top: auto; margin-top: 8px; }
+    /* Reduce heavy visuals for performance */
+    body, .outer, .letter-card { background-attachment: scroll; }
+    .deco, .sealed-icon, .card1-bg svg { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- Floating decorations - match the video -->
+<div class="deco" style="top:4%;left:4%;font-size:clamp(1rem,2.5vw,1.6rem);color:#FFD93D;animation-duration:4.2s;">★</div>
+<div class="deco" style="top:7%;left:14%;font-size:clamp(0.7rem,1.5vw,1rem);color:#4AABDB;animation-duration:5.1s;animation-delay:.6s;">◆</div>
+<div class="deco" style="top:5%;right:5%;font-size:clamp(1.8rem,4vw,2.8rem);animation-duration:6s;animation-delay:.3s;">☁️</div>
+<div class="deco" style="top:17%;right:12%;font-size:clamp(1rem,2.5vw,1.8rem);color:#FFD93D;animation-duration:4s;animation-delay:.9s;">✦</div>
+<div class="deco" style="bottom:24%;left:1.5%;font-size:clamp(0.9rem,2vw,1.3rem);color:#FF6B9D;animation-duration:5.2s;animation-delay:.2s;">♥</div>
+<div class="deco" style="bottom:18%;right:3%;font-size:clamp(1rem,2vw,1.4rem);color:#FF6B9D;animation-duration:4.6s;animation-delay:.7s;">♥</div>
+<div class="deco" style="top:46%;left:1%;font-size:clamp(1.3rem,2.5vw,2rem);animation-duration:5s;animation-delay:.4s;">🌸</div>
+<div class="deco" style="bottom:6%;right:19%;font-size:clamp(0.7rem,1.5vw,1rem);color:#FF4DA6;animation-duration:3.6s;animation-delay:1.3s;">♥</div>
+<div class="deco" style="top:2%;right:31%;font-size:clamp(1rem,2vw,1.6rem);color:#A78BFA;animation-duration:4s;animation-delay:.6s;">✦</div>
+<div class="deco" style="bottom:10%;left:17%;font-size:clamp(0.8rem,1.8vw,1.2rem);color:#FFD93D;animation-duration:4.4s;animation-delay:1s;">★</div>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Birthday Wishes Cards 🎁</h1>
+  <p>Click each card to reveal a birthday message!</p>
+</div>
+
+<!-- OUTER CONTAINER -->
+<div class="outer">
+  <div class="cards-row">
+
+    <!-- CARD 1: Hello Kitty illustrated face (cream bg, stars, HK line art) -->
+    <div class="flip-card" id="fc0" onclick="flipCard(0)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card1-bg">
+            <img src="hello-kitty-hearts.gif"
+                 alt="Cute Hello Kitty with hearts"
+                 />
+            <!-- Sparkle stars in background -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+              <text x="8%"  y="22%" font-size="18" fill="#FFD93D" opacity="0.75">✦</text>
+              <text x="82%" y="18%" font-size="13" fill="#FFD93D" opacity="0.55">★</text>
+              <text x="88%" y="60%" font-size="14" fill="#FFD93D" opacity="0.6">✦</text>
+              <text x="6%"  y="80%" font-size="11" fill="#FFD93D" opacity="0.5">★</text>
+              <text x="72%" y="87%" font-size="10" fill="#FFC0CB" opacity="0.45">✦</text>
+              <text x="48%" y="9%"  font-size="9"  fill="#FFB7D5" opacity="0.4">★</text>
+              <text x="15%" y="92%" font-size="11" fill="#FFD93D" opacity="0.45">✦</text>
+            </svg>
+            <!-- Hello Kitty face SVG - matching the video illustration style -->
+            <svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg"
+                 style="width:78%;height:78%;position:relative;z-index:1;">
+              <!-- Head -->
+              <ellipse cx="110" cy="112" rx="75" ry="72" fill="white" stroke="#C4586A" stroke-width="4"/>
+              <!-- Left ear -->
+              <ellipse cx="48" cy="55" rx="24" ry="26" fill="white" stroke="#C4586A" stroke-width="4"/>
+              <!-- Right ear -->
+              <ellipse cx="172" cy="55" rx="24" ry="26" fill="white" stroke="#C4586A" stroke-width="4"/>
+              <!-- Bow (right side, pink/magenta) -->
+              <!-- Left bow petal -->
+              <path d="M158 38 Q148 28 138 36 Q142 44 158 38Z" fill="#E8186D"/>
+              <!-- Right bow petal -->  
+              <path d="M158 38 Q168 28 178 36 Q174 44 158 38Z" fill="#E8186D"/>
+              <!-- Bow knot -->
+              <circle cx="158" cy="38" r="7" fill="#FF6EA8"/>
+              <!-- Eyes (big round, closed/content look from video) -->
+              <ellipse cx="88"  cy="112" rx="9" ry="10" fill="#3A2828"/>
+              <ellipse cx="132" cy="112" rx="9" ry="10" fill="#3A2828"/>
+              <!-- Eye shine -->
+              <circle cx="91"  cy="107" r="3.5" fill="white"/>
+              <circle cx="135" cy="107" r="3.5" fill="white"/>
+              <!-- Nose -->
+              <ellipse cx="110" cy="126" rx="6" ry="5" fill="#E8B870"/>
+              <!-- Whiskers left -->
+              <line x1="22"  y1="115" x2="94"  y2="120" stroke="#C4586A" stroke-width="2.8" stroke-linecap="round"/>
+              <line x1="22"  y1="130" x2="94"  y2="128" stroke="#C4586A" stroke-width="2.8" stroke-linecap="round"/>
+              <!-- Whiskers right -->
+              <line x1="198" y1="115" x2="126" y2="120" stroke="#C4586A" stroke-width="2.8" stroke-linecap="round"/>
+              <line x1="198" y1="130" x2="126" y2="128" stroke="#C4586A" stroke-width="2.8" stroke-linecap="round"/>
+              <!-- Small smile dots (cheek blush implied) -->
+              <ellipse cx="72"  cy="132" rx="11" ry="7" fill="rgba(255,160,180,0.25)"/>
+              <ellipse cx="148" cy="132" rx="11" ry="7" fill="rgba(255,160,180,0.25)"/>
+            </svg>
+          </div>
+          <div class="open-tag">✨ Open!</div>
+        </div>
+        <div class="flip-back">
+          <p class="back-msg">Happy Birthday to the girl who makes every day feel like a celebration!<span class="back-emojis">🎊 💕</span></p>
+          <div class="flip-back-tag">↩ Click to flip back</div>
+          <button class="tap-back" onclick="unflip(event,0)">↩ Flip back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Hello Kitty with letter/Love You card - matching video card 2 style -->
+    <div class="flip-card" id="fc1" onclick="flipCard(1)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card2-bg">

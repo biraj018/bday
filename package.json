@@ -1,0 +1,9 @@
+{
+  "name": "birthday-surprises",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static birthday surprises site — ready for Vercel static deployment",
+  "scripts": {
+    "start": "node -e \"console.log('No build required — open index.html')\""
+  }
+}
